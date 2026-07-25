@@ -1,0 +1,12 @@
+Competitions
+Seasons
+Teams
+Players
+Matches
+Lineups
+Events
+Positions
+EventTypes
+PlayPatterns
+Stadiums
+Referees
