@@ -18,8 +18,7 @@ from pathlib import Path
 
 # ==========================================================
 # CHANGE THIS TO YOUR STATSBOMB OPEN-DATA/data DIRECTORY
-# Example:
-# SOURCE = Path("/home/vishnu/Downloads/open-data/data")
+
 # ==========================================================
 
 SOURCE = Path("/path/to/open-data/data")

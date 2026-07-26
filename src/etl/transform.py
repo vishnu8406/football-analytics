@@ -224,6 +224,12 @@ def transform_matches(matches_df: pd.DataFrame) -> pd.DataFrame:
         .apply(pd.Series)["id"]
         .rename("stadium_id")
     )
+    referee_id = (
+            matches_df["referee"]
+            .apply(pd.Series)["id"]
+            .rename("referee_id")
+        )
+
 
     # -----------------------------
     # Build Matches Table
@@ -236,8 +242,14 @@ def transform_matches(matches_df: pd.DataFrame) -> pd.DataFrame:
             home_team_id,
             away_team_id,
             stadium_id,
+            referee_id,
             matches_df["home_score"],
             matches_df["away_score"],
+            matches_df["match_week"],
+            matches_df["match_date"],
+            matches_df["kick_off"]
+
+
         ],
         axis=1,
     )
@@ -245,3 +257,49 @@ def transform_matches(matches_df: pd.DataFrame) -> pd.DataFrame:
     matches_table = matches_table.reset_index(drop=True)
 
     return matches_table
+
+def transform_seasons(matches_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    """
+    if not isinstance(matches_df, pd.DataFrame):
+        raise TypeError("Input must be a pandas DataFrame.")
+
+    if matches_df.empty:
+        raise ValueError("Input DataFrame is empty.")
+
+    required_columns = {"season"}
+
+    if not required_columns.issubset(matches_df.columns):
+        raise ValueError(
+            f"Missing required columns: {required_columns - set(matches_df.columns)}"
+        )
+
+    season_df = (matches_df["season"].apply(pd.Series)[["season_id","season_name"]].drop_duplicates(subset=["season_id"]).
+                 reset_index(drop=True)
+                 )
+
+    return season_df
+
+
+def transform_competitions(matches_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    """
+    if not isinstance(matches_df, pd.DataFrame):
+        raise TypeError("Input must be a pandas DataFrame.")
+
+    if matches_df.empty:
+        raise ValueError("Input DataFrame is empty.")
+
+    required_columns = {"competition"}
+
+    if not required_columns.issubset(matches_df.columns):
+        raise ValueError(
+            f"Missing required columns: {required_columns - set(matches_df.columns)}"
+        )
+
+    competition_df = (matches_df["competition"].apply(pd.Series)[["competition_id","competition_name"]].
+                 drop_duplicates(subset=["competition_id"]).
+                 reset_index(drop=True)
+                 )
+
+    return competition_df
