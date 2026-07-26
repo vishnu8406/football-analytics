@@ -5,6 +5,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 # Data
 MATCHES_PATH = PROJECT_ROOT / "data" / "raw" / "matches" / "27.json"
+LINEUPS_PATH = PROJECT_ROOT / "data" / "raw" / "lineups"
 
 # Database
 DATABASE_PATH = PROJECT_ROOT / "data" / "database" / "football.db"
