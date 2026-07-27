@@ -5,6 +5,11 @@ from etl.extract import (
     extract_match_files,
 )
 
+from etl.load import (
+    create_connection,
+    load_dataframe,
+    close_connection,
+)
 from etl.transform import (
     transform_teams,
     transform_stadiums,
@@ -12,26 +17,22 @@ from etl.transform import (
     transform_competitions,
     transform_seasons,
     transform_matches,
+
     transform_players,
     transform_positions,
     transform_match_players,
     transform_players_positions,
-    transform_body_parts,
-    transform_event_types,
+
     transform_events,
-    transform_pass_events,
+    transform_event_types,
+    transform_play_pattern,
+
     transform_pass_heights,
-    transform_pass_outcomes,
     transform_pass_types,
-    transform_play_pattern
+    transform_body_parts,
+    transform_pass_outcomes,
+    transform_pass_events,
 )
-
-from etl.load import (
-    create_connection,
-    load_dataframe,
-    close_connection,
-)
-
 from database.schema import create_tables
 
 
