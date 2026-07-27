@@ -564,6 +564,7 @@ def transform_positions(
             for player in team["lineup"]:
 
                 for position in player["positions"]:
+                    
 
                     row_data = {
                         "position_id": position["position_id"],
@@ -585,3 +586,536 @@ def transform_positions(
     )
 
     return positions_df
+
+def transform_events(
+    event_files: list[dict],
+) -> pd.DataFrame:
+    """
+    Transform extracted event data into the Events table.
+
+    Parameters
+    ----------
+    event_files : list[dict]
+        List of extracted event JSON files.
+
+    Returns
+    -------
+    pd.DataFrame
+        Events table containing one row per event.
+    """
+
+    # -----------------------------
+    # Validation
+    # -----------------------------
+    if not isinstance(event_files, list):
+        raise TypeError("Input must be a list.")
+
+    if not event_files:
+        raise ValueError("Input list is empty.")
+
+    # -----------------------------
+    # Transformation
+    # -----------------------------
+    events = []
+
+    for match in event_files:
+
+        for event in match["data"]:
+
+            player = event.get("player", {})
+            position = event.get("position", {})
+            location = event.get("location", [])
+            team = event.get("team", {})
+            event_type = event.get("type", {})
+            possession_team = event.get("possession_team", {})
+            play_pattern = event.get("play_pattern", {})
+            player_id = player.get("id")
+            position_id = position.get("id")
+
+            if position_id == 0:
+                position_id = None
+
+            row_data = {
+                "event_id": event["id"],
+                "match_id": match["match_id"],
+                "event_index": event["index"],
+
+                "period": event["period"],
+                "minute": event["minute"],
+                "second": event["second"],
+                "timestamp": event["timestamp"],
+
+                "event_type_id": event_type.get("id"),
+
+                "team_id": team.get("id"),
+                "player_id": player_id,
+                "position_id": position_id,
+
+                "possession": event["possession"],
+                "possession_team_id": possession_team.get("id"),
+                "play_pattern_id": play_pattern.get("id"),
+
+                "duration": event.get("duration"),
+
+                "location_x": location[0] if len(location) > 0 else None,
+                "location_y": location[1] if len(location) > 1 else None,
+            }
+
+            events.append(row_data)
+
+    # -----------------------------
+    # Build DataFrame
+    # -----------------------------
+    events_df = pd.DataFrame(events)
+
+    events_df = (
+        events_df
+        .sort_values(["match_id", "event_index"])
+        .reset_index(drop=True)
+    )
+
+    return events_df
+def transform_event_types(
+    event_files: list[dict],
+) -> pd.DataFrame:
+    """
+    Transform extracted event data into the EventTypes table.
+
+    Parameters
+    ----------
+    event_files : list[dict]
+        List of extracted event JSON files.
+
+    Returns
+    -------
+    pd.DataFrame
+        EventTypes table containing one row per unique event type.
+    """
+
+    # -----------------------------
+    # Validation
+    # -----------------------------
+    if not isinstance(event_files, list):
+        raise TypeError("Input must be a list.")
+
+    if not event_files:
+        raise ValueError("Input list is empty.")
+
+    # -----------------------------
+    # Transformation
+    # -----------------------------
+    event_types = []
+
+    for match in event_files:
+
+        for event in match["data"]:
+
+            event_type = event.get("type", {})
+
+            row_data = {
+                "event_type_id": event_type.get("id"),
+                "event_type_name": event_type.get("name"),
+            }
+
+            event_types.append(row_data)
+
+    # -----------------------------
+    # Build DataFrame
+    # -----------------------------
+    event_types_df = pd.DataFrame(event_types)
+
+    event_types_df = (
+        event_types_df
+        .drop_duplicates(subset=["event_type_id"])
+        .sort_values("event_type_id")
+        .reset_index(drop=True)
+    )
+
+    return event_types_df
+
+
+def transform_play_pattern(
+    event_files: list[dict],
+) -> pd.DataFrame:
+    """
+    Transform extracted event data into the PlayPattern table.
+
+    Parameters
+    ----------
+    event_files : list[dict]
+        List of extracted event JSON files.
+
+    Returns
+    -------
+    pd.DataFrame
+        play pattern table containing one row per unique event type.
+    """
+
+    # -----------------------------
+    # Validation
+    # -----------------------------
+    if not isinstance(event_files, list):
+        raise TypeError("Input must be a list.")
+
+    if not event_files:
+        raise ValueError("Input list is empty.")
+
+    # -----------------------------
+    # Transformation
+    # -----------------------------
+    play_patterns = []
+
+    for match in event_files:
+
+        for event in match["data"]:
+
+            play_pattern = event.get("play_pattern", {})
+
+            row_data = {
+                "play_pattern_id": play_pattern.get("id"),
+                "play_pattern_name": play_pattern.get("name"),
+            }
+
+            play_patterns.append(row_data)
+
+    # -----------------------------
+    # Build DataFrame
+    # -----------------------------
+    play_pattern_df = pd.DataFrame(play_patterns)
+
+    play_pattern_df = (
+        
+        play_pattern_df.drop_duplicates(subset=["play_pattern_id"])
+        .sort_values("play_pattern_id")
+        .reset_index(drop=True)
+    )
+
+    return play_pattern_df
+
+def transform_pass_heights(
+    event_files: list[dict],
+) -> pd.DataFrame:
+    """
+    Transform extracted event data into the PassHeights table.
+
+    Parameters
+    ----------
+    event_files : list[dict]
+        List of extracted event JSON files.
+
+    Returns
+    -------
+    pd.DataFrame
+        PassHeights table containing one row per unique pass height.
+    """
+
+    # -----------------------------
+    # Validation
+    # -----------------------------
+    if not isinstance(event_files, list):
+        raise TypeError("Input must be a list.")
+
+    if not event_files:
+        raise ValueError("Input list is empty.")
+
+    # -----------------------------
+    # Transformation
+    # -----------------------------
+    pass_heights = []
+
+    for match in event_files:
+
+        for event in match["data"]:
+
+            pass_data = event.get("pass", {})
+            height = pass_data.get("height", {})
+
+            if not height:
+                continue
+
+            row_data = {
+                "pass_height_id": height.get("id"),
+                "pass_height_name": height.get("name"),
+            }
+
+            pass_heights.append(row_data)
+
+    # -----------------------------
+    # Build DataFrame
+    # -----------------------------
+    pass_heights_df = pd.DataFrame(pass_heights)
+
+    pass_heights_df = (
+        pass_heights_df
+        .drop_duplicates(subset=["pass_height_id"])
+        .sort_values("pass_height_id")
+        .reset_index(drop=True)
+    )
+
+    return pass_heights_df
+
+
+def transform_pass_types(
+    event_files: list[dict],
+) -> pd.DataFrame:
+    """
+    Transform extracted event data into the PassTypes table.
+
+    Parameters
+    ----------
+    event_files : list[dict]
+        List of extracted event JSON files.
+
+    Returns
+    -------
+    pd.DataFrame
+        PassTypes table containing one row per unique pass type.
+    """
+
+    # -----------------------------
+    # Validation
+    # -----------------------------
+    if not isinstance(event_files, list):
+        raise TypeError("Input must be a list.")
+
+    if not event_files:
+        raise ValueError("Input list is empty.")
+
+    # -----------------------------
+    # Transformation
+    # -----------------------------
+    pass_types = []
+
+    for match in event_files:
+
+        for event in match["data"]:
+
+            pass_data = event.get("pass", {})
+            pass_type = pass_data.get("type", {})
+
+            if not pass_type:
+                continue
+
+            row_data = {
+                "pass_type_id": pass_type.get("id"),
+                "pass_type_name": pass_type.get("name"),
+            }
+
+            pass_types.append(row_data)
+
+    # -----------------------------
+    # Build DataFrame
+    # -----------------------------
+    pass_types_df = pd.DataFrame(pass_types)
+
+    pass_types_df = (
+        pass_types_df
+        .drop_duplicates(subset=["pass_type_id"])
+        .sort_values("pass_type_id")
+        .reset_index(drop=True)
+    )
+
+    return pass_types_df
+
+def transform_body_parts(
+    event_files: list[dict],
+) -> pd.DataFrame:
+    """
+    Transform extracted event data into the BodyParts table.
+
+    Parameters
+    ----------
+    event_files : list[dict]
+        List of extracted event JSON files.
+
+    Returns
+    -------
+    pd.DataFrame
+        BodyParts table containing one row per unique body part.
+    """
+
+    # -----------------------------
+    # Validation
+    # -----------------------------
+    if not isinstance(event_files, list):
+        raise TypeError("Input must be a list.")
+
+    if not event_files:
+        raise ValueError("Input list is empty.")
+
+    # -----------------------------
+    # Transformation
+    # -----------------------------
+    body_parts = []
+
+    for match in event_files:
+
+        for event in match["data"]:
+
+            pass_data = event.get("pass", {})
+            body_part = pass_data.get("body_part", {})
+
+            if not body_part:
+                continue
+
+            row_data = {
+                "body_part_id": body_part.get("id"),
+                "body_part_name": body_part.get("name"),
+            }
+
+            body_parts.append(row_data)
+
+    # -----------------------------
+    # Build DataFrame
+    # -----------------------------
+    body_parts_df = pd.DataFrame(body_parts)
+
+    body_parts_df = (
+        body_parts_df
+        .drop_duplicates(subset=["body_part_id"])
+        .sort_values("body_part_id")
+        .reset_index(drop=True)
+    )
+
+    return body_parts_df
+
+def transform_pass_outcomes(
+    event_files: list[dict],
+) -> pd.DataFrame:
+    """
+    Transform extracted event data into the PassOutcomes table.
+
+    Parameters
+    ----------
+    event_files : list[dict]
+        List of extracted event JSON files.
+
+    Returns
+    -------
+    pd.DataFrame
+        PassOutcomes table containing one row per unique pass outcome.
+    """
+
+    # -----------------------------
+    # Validation
+    # -----------------------------
+    if not isinstance(event_files, list):
+        raise TypeError("Input must be a list.")
+
+    if not event_files:
+        raise ValueError("Input list is empty.")
+
+    # -----------------------------
+    # Transformation
+    # -----------------------------
+    pass_outcomes = []
+
+    for match in event_files:
+
+        for event in match["data"]:
+
+            pass_data = event.get("pass", {})
+            outcome = pass_data.get("outcome", {})
+
+            if not outcome:
+                continue
+
+            row_data = {
+                "outcome_id": outcome.get("id"),
+                "outcome_name": outcome.get("name"),
+            }
+
+            pass_outcomes.append(row_data)
+
+    # -----------------------------
+    # Build DataFrame
+    # -----------------------------
+    pass_outcomes_df = pd.DataFrame(pass_outcomes)
+
+    pass_outcomes_df = (
+        pass_outcomes_df
+        .drop_duplicates(subset=["outcome_id"])
+        .sort_values("outcome_id")
+        .reset_index(drop=True)
+    )
+
+    return pass_outcomes_df
+
+def transform_pass_events(
+    event_files: list[dict],
+) -> pd.DataFrame:
+    """
+    Transform extracted event data into the PassEvents table.
+
+    Parameters
+    ----------
+    event_files : list[dict]
+        List of extracted event JSON files.
+
+    Returns
+    -------
+    pd.DataFrame
+        PassEvents table containing one row per pass event.
+    """
+
+    # -----------------------------
+    # Validation
+    # -----------------------------
+    if not isinstance(event_files, list):
+        raise TypeError("Input must be a list.")
+
+    if not event_files:
+        raise ValueError("Input list is empty.")
+
+    # -----------------------------
+    # Transformation
+    # -----------------------------
+    pass_events = []
+
+    for match in event_files:
+
+        for event in match["data"]:
+
+            pass_data = event.get("pass", {})
+
+            if not pass_data:
+                continue
+
+            recipient = pass_data.get("recipient", {})
+            pass_height = pass_data.get("height", {})
+            pass_type = pass_data.get("type", {})
+            body_part = pass_data.get("body_part", {})
+            outcome = pass_data.get("outcome", {})
+            end_location = pass_data.get("end_location", [])
+
+            row_data = {
+                "event_id": event["id"],
+                "recipient_id": recipient.get("id"),
+
+                "pass_type_id": pass_type.get("id"),
+                "pass_height_id": pass_height.get("id"),
+                "body_part_id": body_part.get("id"),
+
+                "pass_length": pass_data.get("length"),
+                "pass_angle": pass_data.get("angle"),
+
+                "end_location_x": end_location[0] if len(end_location) > 0 else None,
+                "end_location_y": end_location[1] if len(end_location) > 1 else None,
+
+                "outcome_id": outcome.get("id"),
+            }
+
+            pass_events.append(row_data)
+
+    # -----------------------------
+    # Build DataFrame
+    # -----------------------------
+    pass_events_df = pd.DataFrame(pass_events)
+
+    pass_events_df = (
+        pass_events_df
+        .sort_values("event_id")
+        .reset_index(drop=True)
+    )
+
+    return pass_events_df

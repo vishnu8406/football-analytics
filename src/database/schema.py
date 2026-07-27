@@ -205,5 +205,141 @@ def create_tables(connection: sqlite3.Connection) -> None:
                 REFERENCES Positions(position_id)
         );
     """)
+    cursor.execute("""CREATE TABLE IF NOT EXISTS EventTypes (
+
+    event_type_id INTEGER PRIMARY KEY,
+    event_type_name TEXT NOT NULL
+
+);
+    """)
+    cursor.execute("""CREATE TABLE IF NOT EXISTS PlayPatterns (
+
+    play_pattern_id INTEGER PRIMARY KEY,
+    play_pattern_name TEXT NOT NULL
+
+);
+        """)
+    cursor.execute("""CREATE TABLE IF NOT EXISTS PassHeights (
+
+    pass_height_id INTEGER PRIMARY KEY,
+    pass_height_name TEXT NOT NULL
+
+);
+        """)
+    cursor.execute("""CREATE TABLE IF NOT EXISTS PassTypes (
+
+    pass_type_id INTEGER PRIMARY KEY,
+    pass_type_name TEXT NOT NULL
+
+);
+        """)
+    cursor.execute("""CREATE TABLE IF NOT EXISTS BodyParts (
+
+    body_part_id INTEGER PRIMARY KEY,
+    body_part_name TEXT NOT NULL
+
+);
+        """)
+    cursor.execute("""CREATE TABLE IF NOT EXISTS PassOutcomes (
+
+    outcome_id INTEGER PRIMARY KEY,
+    outcome_name TEXT NOT NULL
+
+);
+        """)
+    cursor.execute("""CREATE TABLE IF NOT EXISTS Events (
+
+    event_id TEXT PRIMARY KEY,
+
+    match_id INTEGER NOT NULL,
+
+    event_index INTEGER,
+
+    period INTEGER,
+    minute INTEGER,
+    second INTEGER,
+
+    timestamp TEXT,
+
+    event_type_id INTEGER,
+
+    team_id INTEGER,
+    player_id INTEGER,
+    position_id INTEGER,
+
+    possession INTEGER,
+    possession_team_id INTEGER,
+
+    play_pattern_id INTEGER,
+
+    duration REAL,
+
+    location_x REAL,
+    location_y REAL,
+
+    FOREIGN KEY(match_id)
+        REFERENCES Matches(match_id),
+
+    FOREIGN KEY(event_type_id)
+        REFERENCES EventTypes(event_type_id),
+
+    FOREIGN KEY(team_id)
+        REFERENCES Teams(team_id),
+
+    FOREIGN KEY(player_id)
+        REFERENCES Players(player_id),
+
+    FOREIGN KEY(position_id)
+        REFERENCES Positions(position_id),
+
+    FOREIGN KEY(possession_team_id)
+        REFERENCES Teams(team_id),
+
+    FOREIGN KEY(play_pattern_id)
+        REFERENCES PlayPatterns(play_pattern_id)
+);
+        """)
+    cursor.execute("""CREATE TABLE IF NOT EXISTS PassEvents (
+
+    event_id TEXT PRIMARY KEY,
+
+    recipient_id INTEGER,
+
+    pass_type_id INTEGER,
+
+    pass_height_id INTEGER,
+
+    body_part_id INTEGER,
+
+    outcome_id INTEGER,
+
+    pass_length REAL,
+
+    pass_angle REAL,
+
+    end_location_x REAL,
+
+    end_location_y REAL,
+
+    FOREIGN KEY(event_id)
+        REFERENCES Events(event_id),
+
+    FOREIGN KEY(recipient_id)
+        REFERENCES Players(player_id),
+
+    FOREIGN KEY(pass_type_id)
+        REFERENCES PassTypes(pass_type_id),
+
+    FOREIGN KEY(pass_height_id)
+        REFERENCES PassHeights(pass_height_id),
+
+    FOREIGN KEY(body_part_id)
+        REFERENCES BodyParts(body_part_id),
+
+    FOREIGN KEY(outcome_id)
+        REFERENCES PassOutcomes(outcome_id)
+);
+        """)
+    
 
     connection.commit()
