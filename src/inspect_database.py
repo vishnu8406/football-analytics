@@ -12,7 +12,13 @@ match_folder = "data/raw/events"
 
 
 events = extract_match_files(match_folder, match_ids)
+print("extraction finished")
+shot_keys = set()
 
-events_df = transform_pass_heights(events)
+for match in events:
+    for events in match["data"]:
+        shot = events.get("shot")
+        if shot:
+            shot_keys.update(shot.keys())
 
-print(events_df)
+print(sorted(shot_keys))

@@ -340,6 +340,75 @@ def create_tables(connection: sqlite3.Connection) -> None:
         REFERENCES PassOutcomes(outcome_id)
 );
         """)
+
+    cursor.execute("""CREATE TABLE IF NOT EXISTS ShotOutcomes (
+
+    shot_outcome_id INTEGER PRIMARY KEY,
+    shot_outcome_name TEXT NOT NULL
+
+);
+""")
+    cursor.execute("""CREATE TABLE IF NOT EXISTS ShotTypes (
+
+    shot_type_id INTEGER PRIMARY KEY,
+    shot_type_name TEXT NOT NULL
+
+);""")
+    cursor.execute("""CREATE TABLE IF NOT EXISTS ShotTechniques (
+
+    shot_technique_id INTEGER PRIMARY KEY,
+    shot_technique_name TEXT NOT NULL
+
+);""")
+    cursor.execute("""CREATE TABLE IF NOT EXISTS ShotEvents (
+
+    event_id TEXT PRIMARY KEY,
+
+    shot_outcome_id INTEGER,
+    shot_type_id INTEGER,
+    shot_technique_id INTEGER,
+    body_part_id INTEGER,
+
+    statsbomb_xg REAL,
+
+    under_pressure BOOLEAN,
+
+    first_time BOOLEAN,
+    deflected BOOLEAN,
+    one_on_one BOOLEAN,
+    open_goal BOOLEAN,
+    redirect BOOLEAN,
+    follows_dribble BOOLEAN,
+    aerial_won BOOLEAN,
+    saved_off_target BOOLEAN,
+    saved_to_post BOOLEAN,
+
+    key_pass_event_id TEXT,
+
+    end_location_x REAL,
+    end_location_y REAL,
+    end_location_z REAL,
+
+    FOREIGN KEY(event_id)
+        REFERENCES Events(event_id),
+
+    FOREIGN KEY(shot_outcome_id)
+        REFERENCES ShotOutcomes(shot_outcome_id),
+
+    FOREIGN KEY(shot_type_id)
+        REFERENCES ShotTypes(shot_type_id),
+
+    FOREIGN KEY(shot_technique_id)
+        REFERENCES ShotTechniques(shot_technique_id),
+
+    FOREIGN KEY(body_part_id)
+        REFERENCES BodyParts(body_part_id),
+
+    FOREIGN KEY(key_pass_event_id)
+        REFERENCES Events(event_id)
+
+);""")
+    
     
 
     connection.commit()

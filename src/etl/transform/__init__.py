@@ -27,3 +27,10 @@ from .passes import (
     transform_pass_outcomes,
     transform_pass_events,
 )
+
+from .shots import (
+    transform_shot_events,
+    transform_shot_outcomes,
+    transform_shot_techniques,
+    transform_shot_types
+)

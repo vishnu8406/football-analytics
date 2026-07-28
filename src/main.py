@@ -32,6 +32,11 @@ from etl.transform import (
     transform_body_parts,
     transform_pass_outcomes,
     transform_pass_events,
+
+    transform_shot_types,
+    transform_shot_techniques,
+    transform_shot_outcomes,
+    transform_shot_events
 )
 from database.schema import create_tables
 
@@ -93,6 +98,16 @@ def main() -> None:
         events_df = transform_events(event_files)
         pass_events_df = transform_pass_events(event_files)
         print("transform finished")
+        #----------------------------------
+        #Transform Shot Events
+        #----------------------------------
+
+        shot_outcomes_df  = transform_shot_outcomes(event_files)
+        shot_types_df  = transform_shot_types(event_files)
+        shot_techniques_df  = transform_shot_techniques(event_files)
+        shot_events_df  = transform_shot_events(event_files)
+
+        print("transform finished")
 
 
 
@@ -107,6 +122,8 @@ def main() -> None:
         load_dataframe(referees_df, "Referees", connection)
         load_dataframe(matches_table_df, "Matches", connection)
 
+        print("MATCH TABLE LOADED")
+
 
         # ----------------------------------
         # Load Lineup Tables
@@ -115,6 +132,8 @@ def main() -> None:
         load_dataframe(positions_df, "Positions", connection)
         load_dataframe(match_players_df, "MatchPlayers", connection)
         load_dataframe(player_positions_df, "PlayerPositions", connection)
+
+        print("LINEUP TABLE LOADED")
 
         #-----------------------------------
         # Load Events and Pass Events
@@ -133,27 +152,24 @@ def main() -> None:
         load_dataframe(body_parts_df, "BodyParts", connection)
 
         load_dataframe(pass_outcomes_df, "PassOutcomes", connection)
-        print("Missing Matches:")
-        print(set(events_df["match_id"]) - set(matches_table_df["match_id"]))
-
-        print("Missing Teams:")
-        print(set(events_df["team_id"]) - set(teams_df["team_id"]))
-
-        print("Missing Players:")
-        print(set(events_df["player_id"].dropna().astype(int)) - set(players_df["player_id"]))
-
-        print("Missing Positions:")
-        print(set(events_df["position_id"].dropna().astype(int)) - set(positions_df["position_id"]))
-
-        print("Missing Event Types:")
-        print(set(events_df["event_type_id"]) - set(event_types_df["event_type_id"]))
-
-        print("Missing Play Patterns:")
-        print(set(events_df["play_pattern_id"]) - set(play_patterns_df["play_pattern_id"]))
 
         load_dataframe(events_df, "Events", connection)
 
         load_dataframe(pass_events_df, "PassEvents", connection)
+
+        print("LOADED EVETS AND PASS EVENTS")
+
+        #---------------------------------
+        # Load Shot and Shot Events
+        #---------------------------------
+
+        load_dataframe(shot_outcomes_df, "ShotOutcomes", connection)
+
+        load_dataframe(shot_types_df, "ShotTypes", connection)
+
+        load_dataframe(shot_techniques_df, "ShotTechniques", connection)
+
+        load_dataframe(shot_events_df, "ShotEvents", connection)
 
         print("✅ ETL pipeline completed successfully.")
 
