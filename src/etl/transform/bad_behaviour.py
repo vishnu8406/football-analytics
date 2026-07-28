@@ -1,10 +1,20 @@
 import pandas as pd
 
-def transform_carry_events(
+def transform_bad_behaviour_events(
     event_files: list[dict],
 ) -> pd.DataFrame:
     """
-    Transform extracted event data into the CarryEvents table.
+    Transform extracted event data into the BadBehaviourEvents table.
+
+    Parameters
+    ----------
+    event_files : list[dict]
+        List of extracted event JSON files.
+
+    Returns
+    -------
+    pd.DataFrame
+        BadBehaviourEvents table containing one row per bad behaviour event.
     """
 
     # -----------------------------
@@ -19,38 +29,33 @@ def transform_carry_events(
     # -----------------------------
     # Transformation
     # -----------------------------
-    carry_events = []
+    bad_behaviour_events = []
 
     for match in event_files:
 
         for event in match["data"]:
 
-            carry = event.get("carry", {})
+            bad_behaviour = event.get("bad_behaviour", {})
 
-            if not carry:
+            if not bad_behaviour:
                 continue
 
-            end_location = carry.get("end_location", [])
+            card = bad_behaviour.get("card", {})
 
             row_data = {
                 "event_id": event["id"],
-
-                "end_location_x":
-                    end_location[0] if len(end_location) > 0 else None,
-
-                "end_location_y":
-                    end_location[1] if len(end_location) > 1 else None,
+                "card_id": card.get("id"),
             }
 
-            carry_events.append(row_data)
+            bad_behaviour_events.append(row_data)
 
     # -----------------------------
     # Build DataFrame
     # -----------------------------
-    carry_events_df = (
-        pd.DataFrame(carry_events)
+    bad_behaviour_events_df = (
+        pd.DataFrame(bad_behaviour_events)
         .sort_values("event_id")
         .reset_index(drop=True)
     )
 
-    return carry_events_df
+    return bad_behaviour_events_df

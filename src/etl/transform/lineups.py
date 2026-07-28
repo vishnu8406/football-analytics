@@ -192,49 +192,59 @@ def transform_players_positions(
         .sort_values(["match_id", "player_id","position_id"])
         .reset_index(drop=True)
     )
-
     return player_position_df
 
-
 def transform_positions(
-    match_files: list[dict]
+    lineup_files: list[dict],
+    event_files: list[dict],
 ) -> pd.DataFrame:
     """
-    Transform extracted lineup data into a Positions table.
+    Transform extracted lineup and event data into the Positions table.
 
     Parameters
     ----------
-    match_files : list[dict]
+    lineup_files : list[dict]
         List of extracted lineup JSON files.
+
+    event_files : list[dict]
+        List of extracted event JSON files.
 
     Returns
     -------
     pd.DataFrame
-        Positions table containing one row per unique football position.
+        Positions table containing one row per unique position.
     """
 
     # -----------------------------
     # Validation
     # -----------------------------
-    if not isinstance(match_files, list):
-        raise TypeError("Input must be a list.")
+    if not isinstance(lineup_files, list):
+        raise TypeError("lineup_files must be a list.")
 
-    if not match_files:
-        raise ValueError("Input list is empty.")
+    if not isinstance(event_files, list):
+        raise TypeError("event_files must be a list.")
+
+    if not lineup_files:
+        raise ValueError("lineup_files is empty.")
+
+    if not event_files:
+        raise ValueError("event_files is empty.")
 
     # -----------------------------
     # Transformation
     # -----------------------------
     positions = []
 
-    for match in match_files:
+    # -----------------------------
+    # Positions from lineups
+    # -----------------------------
+    for match in lineup_files:
 
         for team in match["data"]:
 
             for player in team["lineup"]:
 
                 for position in player["positions"]:
-                    
 
                     row_data = {
                         "position_id": position["position_id"],
@@ -244,12 +254,42 @@ def transform_positions(
                     positions.append(row_data)
 
     # -----------------------------
+    # Positions from events
+    # -----------------------------
+    for match in event_files:
+
+        for event in match["data"]:
+
+            position = event.get("position", {})
+
+            if not position:
+                continue
+
+            row_data = {
+                "position_id": position.get("id"),
+                "position_name": position.get("name"),
+            }
+
+            positions.append(row_data)
+
+            # Goalkeeper-specific position (if present)
+            goalkeeper = event.get("goalkeeper", {})
+            goalkeeper_position = goalkeeper.get("position", {})
+
+            if goalkeeper_position:
+
+                row_data = {
+                    "position_id": goalkeeper_position.get("id"),
+                    "position_name": goalkeeper_position.get("name"),
+                }
+
+                positions.append(row_data)
+
+    # -----------------------------
     # Build DataFrame
     # -----------------------------
-    positions_df = pd.DataFrame(positions)
-
     positions_df = (
-        positions_df
+        pd.DataFrame(positions)
         .drop_duplicates(subset=["position_id"])
         .sort_values("position_id")
         .reset_index(drop=True)

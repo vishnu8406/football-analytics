@@ -242,8 +242,8 @@ def create_tables(connection: sqlite3.Connection) -> None:
         """)
     cursor.execute("""CREATE TABLE IF NOT EXISTS PassOutcomes (
 
-    outcome_id INTEGER PRIMARY KEY,
-    outcome_name TEXT NOT NULL
+    pass_outcome_id INTEGER PRIMARY KEY,
+    pass_outcome_name TEXT NOT NULL
 
 );
         """)
@@ -311,7 +311,7 @@ def create_tables(connection: sqlite3.Connection) -> None:
 
     body_part_id INTEGER,
 
-    outcome_id INTEGER,
+    pass_outcome_id INTEGER,
 
     pass_length REAL,
 
@@ -336,8 +336,8 @@ def create_tables(connection: sqlite3.Connection) -> None:
     FOREIGN KEY(body_part_id)
         REFERENCES BodyParts(body_part_id),
 
-    FOREIGN KEY(outcome_id)
-        REFERENCES PassOutcomes(outcome_id)
+    FOREIGN KEY(pass_outcome_id)
+        REFERENCES PassOutcomes(pass_outcome_id)
 );
         """)
 
@@ -408,6 +408,319 @@ def create_tables(connection: sqlite3.Connection) -> None:
         REFERENCES Events(event_id)
 
 );""")
+
+    cursor.execute("""CREATE TABLE IF NOT EXISTS CarryEvents (
+
+    event_id TEXT PRIMARY KEY,
+
+    end_location_x REAL,
+    end_location_y REAL,
+
+    FOREIGN KEY(event_id)
+        REFERENCES Events(event_id)
+);""")
+
+    cursor.execute("""CREATE TABLE IF NOT EXISTS DribbleOutcomes (
+
+    dribble_outcome_id INTEGER PRIMARY KEY,
+    dribble_outcome_name TEXT NOT NULL
+
+);""")
+    cursor.execute("""CREATE TABLE IF NOT EXISTS DribbleEvents (
+
+    event_id TEXT PRIMARY KEY,
+
+    dribble_outcome_id INTEGER,
+
+    overrun BOOLEAN,
+
+    FOREIGN KEY(event_id)
+        REFERENCES Events(event_id),
+
+    FOREIGN KEY(dribble_outcome_id)
+        REFERENCES DribbleOutcomes(dribble_outcome_id)
+
+);""")
+
+    cursor.execute("""
+CREATE TABLE IF NOT EXISTS BallRecoveryEvents (
+
+    event_id TEXT PRIMARY KEY,
+
+    offensive BOOLEAN,
+    recovery_failure BOOLEAN,
+
+    FOREIGN KEY(event_id)
+        REFERENCES Events(event_id)
+
+);""")
+
+    cursor.execute("""
+CREATE TABLE IF NOT EXISTS InterceptionOutcomes (
+
+    interception_outcome_id INTEGER PRIMARY KEY,
+    interception_outcome_name TEXT NOT NULL
+
+);""")
+
+    cursor.execute("""
+CREATE TABLE IF NOT EXISTS InterceptionEvents (
+
+    event_id TEXT PRIMARY KEY,
+
+    interception_outcome_id INTEGER,
+
+    FOREIGN KEY(event_id)
+        REFERENCES Events(event_id),
+
+    FOREIGN KEY(interception_outcome_id)
+        REFERENCES InterceptionOutcomes(interception_outcome_id)
+
+);""")
+
+    cursor.execute("""
+CREATE TABLE IF NOT EXISTS ClearanceEvents (
+
+    event_id TEXT PRIMARY KEY,
+
+    body_part_id INTEGER,
+
+    aerial_won BOOLEAN,
+    head BOOLEAN,
+    left_foot BOOLEAN,
+    right_foot BOOLEAN,
+    other BOOLEAN,
+
+    out BOOLEAN,
+
+    FOREIGN KEY(event_id)
+        REFERENCES Events(event_id),
+
+    FOREIGN KEY(body_part_id)
+        REFERENCES BodyParts(body_part_id)
+
+);""")
+
+    cursor.execute("""CREATE TABLE IF NOT EXISTS BlockEvents (
+
+    event_id TEXT PRIMARY KEY,
+
+    deflection BOOLEAN,
+    offensive BOOLEAN,
+    save_block BOOLEAN,
+
+    FOREIGN KEY(event_id)
+        REFERENCES Events(event_id)
+
+);""")
+    cursor.execute("""CREATE TABLE IF NOT EXISTS BallReceiptOutcomes (
+
+    ball_receipt_outcome_id INTEGER PRIMARY KEY,
+    ball_receipt_outcome_name TEXT NOT NULL
+
+);""")
+    cursor.execute("""CREATE TABLE IF NOT EXISTS BallReceiptEvents (
+
+    event_id TEXT PRIMARY KEY,
+
+    ball_receipt_outcome_id INTEGER,
+
+    FOREIGN KEY(event_id)
+        REFERENCES Events(event_id),
+
+    FOREIGN KEY(ball_receipt_outcome_id)
+        REFERENCES BallReceiptOutcomes(ball_receipt_outcome_id)
+
+);""")
+    cursor.execute("""CREATE TABLE IF NOT EXISTS MiscontrolEvents (
+
+    event_id TEXT PRIMARY KEY,
+
+    aerial_won BOOLEAN,
+
+    FOREIGN KEY(event_id)
+        REFERENCES Events(event_id)
+
+);""")
+    cursor.execute("""CREATE TABLE IF NOT EXISTS Cards (
+
+    card_id INTEGER PRIMARY KEY,
+    card_name TEXT NOT NULL
+
+);""")
+    cursor.execute("""CREATE TABLE IF NOT EXISTS FoulCommittedTypes (
+
+    foul_committed_type_id INTEGER PRIMARY KEY,
+    foul_committed_type_name TEXT NOT NULL
+
+);""")
+    cursor.execute("""CREATE TABLE IF NOT EXISTS FoulCommittedEvents (
+
+    event_id TEXT PRIMARY KEY,
+
+    foul_committed_type_id INTEGER,
+    card_id INTEGER,
+
+    advantage BOOLEAN,
+    offensive BOOLEAN,
+    penalty BOOLEAN,
+
+    FOREIGN KEY(event_id)
+        REFERENCES Events(event_id),
+
+    FOREIGN KEY(foul_committed_type_id)
+        REFERENCES FoulCommittedTypes(foul_committed_type_id),
+
+    FOREIGN KEY(card_id)
+        REFERENCES Cards(card_id)
+
+);""")
+    cursor.execute("""CREATE TABLE IF NOT EXISTS FoulWonEvents (
+
+    event_id TEXT PRIMARY KEY,
+
+    advantage BOOLEAN,
+    defensive BOOLEAN,
+    penalty BOOLEAN,
+
+    FOREIGN KEY(event_id)
+        REFERENCES Events(event_id)
+
+);""")
+
+    cursor.execute("""CREATE TABLE IF NOT EXISTS SubstitutionOutcomes (
+
+    substitution_outcome_id INTEGER PRIMARY KEY,
+    substitution_outcome_name TEXT NOT NULL
+
+);""")
+    cursor.execute("""CREATE TABLE IF NOT EXISTS SubstitutionEvents (
+
+    event_id TEXT PRIMARY KEY,
+
+    replacement_player_id INTEGER,
+
+    substitution_outcome_id INTEGER,
+
+    FOREIGN KEY(event_id)
+        REFERENCES Events(event_id),
+
+    FOREIGN KEY(replacement_player_id)
+        REFERENCES Players(player_id),
+
+    FOREIGN KEY(substitution_outcome_id)
+        REFERENCES SubstitutionOutcomes(substitution_outcome_id)
+
+);""")
+    cursor.execute("""CREATE TABLE IF NOT EXISTS BadBehaviourEvents (
+
+    event_id TEXT PRIMARY KEY,
+
+    card_id INTEGER,
+
+    FOREIGN KEY(event_id)
+        REFERENCES Events(event_id),
+
+    FOREIGN KEY(card_id)
+        REFERENCES Cards(card_id)
+
+);""")
+    cursor.execute("""CREATE TABLE IF NOT EXISTS DuelTypes (
+
+    duel_type_id INTEGER PRIMARY KEY,
+    duel_type_name TEXT NOT NULL
+
+);""")
+    cursor.execute("""CREATE TABLE IF NOT EXISTS DuelOutcomes (
+
+    duel_outcome_id INTEGER PRIMARY KEY,
+    duel_outcome_name TEXT NOT NULL
+
+);""")
+    cursor.execute("""CREATE TABLE IF NOT EXISTS DuelEvents (
+
+    event_id TEXT PRIMARY KEY,
+
+    duel_type_id INTEGER,
+    duel_outcome_id INTEGER,
+
+    FOREIGN KEY(event_id)
+        REFERENCES Events(event_id),
+
+    FOREIGN KEY(duel_type_id)
+        REFERENCES DuelTypes(duel_type_id),
+
+    FOREIGN KEY(duel_outcome_id)
+        REFERENCES DuelOutcomes(duel_outcome_id)
+
+);""")
+    cursor.execute("""CREATE TABLE IF NOT EXISTS GoalkeeperOutcomes (
+
+    goalkeeper_outcome_id INTEGER PRIMARY KEY,
+    goalkeeper_outcome_name TEXT NOT NULL
+
+);""")
+    cursor.execute("""CREATE TABLE IF NOT EXISTS GoalkeeperTypes (
+
+    goalkeeper_type_id INTEGER PRIMARY KEY,
+    goalkeeper_type_name TEXT NOT NULL
+
+);""")
+    cursor.execute("""CREATE TABLE IF NOT EXISTS GoalkeeperTechniques (
+
+    goalkeeper_technique_id INTEGER PRIMARY KEY,
+    goalkeeper_technique_name TEXT NOT NULL
+
+);""")
+    cursor.execute("""CREATE TABLE IF NOT EXISTS GoalkeeperEvents (
+
+    event_id TEXT PRIMARY KEY,
+
+    goalkeeper_outcome_id INTEGER,
+    goalkeeper_type_id INTEGER,
+
+    position_id INTEGER,
+    goalkeeper_technique_id INTEGER,
+    body_part_id INTEGER,
+
+    end_location_x REAL,
+    end_location_y REAL,
+    end_location_z REAL,
+
+    lost_in_play BOOLEAN,
+    lost_out BOOLEAN,
+
+    punched_out BOOLEAN,
+
+    shot_saved_off_target BOOLEAN,
+    shot_saved_to_post BOOLEAN,
+
+    success_in_play BOOLEAN,
+    success_out BOOLEAN,
+
+    FOREIGN KEY(event_id)
+        REFERENCES Events(event_id),
+
+    FOREIGN KEY(goalkeeper_outcome_id)
+        REFERENCES GoalkeeperOutcomes(goalkeeper_outcome_id),
+
+    FOREIGN KEY(goalkeeper_type_id)
+        REFERENCES GoalkeeperTypes(goalkeeper_type_id),
+
+    FOREIGN KEY(position_id)
+        REFERENCES Positions(position_id),
+
+    FOREIGN KEY(goalkeeper_technique_id)
+        REFERENCES GoalkeeperTechniques(goalkeeper_technique_id),
+
+    FOREIGN KEY(body_part_id)
+        REFERENCES BodyParts(body_part_id)
+
+);""")
+    
+
+
+    
     
     
 

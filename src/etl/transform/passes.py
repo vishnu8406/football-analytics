@@ -161,32 +161,42 @@ def transform_body_parts(
 
         for event in match["data"]:
 
-            pass_data = event.get("pass", {})
-            body_part = pass_data.get("body_part", {})
+            sources = [
 
-            if not body_part:
-                continue
+                event.get("pass", {}).get("body_part", {}),
 
-            row_data = {
-                "body_part_id": body_part.get("id"),
-                "body_part_name": body_part.get("name"),
-            }
+                event.get("shot", {}).get("body_part", {}),
 
-            body_parts.append(row_data)
+                event.get("clearance", {}).get("body_part", {}),
+
+                event.get("goalkeeper", {}).get("body_part", {}),
+
+            ]
+
+            for body_part in sources:
+
+                if not body_part:
+                    continue
+
+                row_data = {
+                    "body_part_id": body_part.get("id"),
+                    "body_part_name": body_part.get("name"),
+                }
+
+                body_parts.append(row_data)
 
     # -----------------------------
     # Build DataFrame
     # -----------------------------
-    body_parts_df = pd.DataFrame(body_parts)
-
     body_parts_df = (
-        body_parts_df
+        pd.DataFrame(body_parts)
         .drop_duplicates(subset=["body_part_id"])
         .sort_values("body_part_id")
         .reset_index(drop=True)
     )
 
     return body_parts_df
+
 
 def transform_pass_outcomes(
     event_files: list[dict],
@@ -230,8 +240,8 @@ def transform_pass_outcomes(
                 continue
 
             row_data = {
-                "outcome_id": outcome.get("id"),
-                "outcome_name": outcome.get("name"),
+                "pass_outcome_id": outcome.get("id"),
+                "pass_outcome_name": outcome.get("name"),
             }
 
             pass_outcomes.append(row_data)
@@ -243,8 +253,8 @@ def transform_pass_outcomes(
 
     pass_outcomes_df = (
         pass_outcomes_df
-        .drop_duplicates(subset=["outcome_id"])
-        .sort_values("outcome_id")
+        .drop_duplicates(subset=["pass_outcome_id"])
+        .sort_values("pass_outcome_id")
         .reset_index(drop=True)
     )
 
@@ -311,7 +321,7 @@ def transform_pass_events(
                 "end_location_x": end_location[0] if len(end_location) > 0 else None,
                 "end_location_y": end_location[1] if len(end_location) > 1 else None,
 
-                "outcome_id": outcome.get("id"),
+                "pass_outcome_id": outcome.get("id"),
             }
 
             pass_events.append(row_data)

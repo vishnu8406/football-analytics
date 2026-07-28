@@ -1,10 +1,19 @@
 import pandas as pd
-
-def transform_carry_events(
+def transform_miscontrol_events(
     event_files: list[dict],
 ) -> pd.DataFrame:
     """
-    Transform extracted event data into the CarryEvents table.
+    Transform extracted event data into the MiscontrolEvents table.
+
+    Parameters
+    ----------
+    event_files : list[dict]
+        List of extracted event JSON files.
+
+    Returns
+    -------
+    pd.DataFrame
+        MiscontrolEvents table containing one row per miscontrol event.
     """
 
     # -----------------------------
@@ -19,38 +28,31 @@ def transform_carry_events(
     # -----------------------------
     # Transformation
     # -----------------------------
-    carry_events = []
+    miscontrol_events = []
 
     for match in event_files:
 
         for event in match["data"]:
 
-            carry = event.get("carry", {})
+            miscontrol = event.get("miscontrol", {})
 
-            if not carry:
+            if not miscontrol:
                 continue
-
-            end_location = carry.get("end_location", [])
 
             row_data = {
                 "event_id": event["id"],
-
-                "end_location_x":
-                    end_location[0] if len(end_location) > 0 else None,
-
-                "end_location_y":
-                    end_location[1] if len(end_location) > 1 else None,
+                "aerial_won": miscontrol.get("aerial_won"),
             }
 
-            carry_events.append(row_data)
+            miscontrol_events.append(row_data)
 
     # -----------------------------
     # Build DataFrame
     # -----------------------------
-    carry_events_df = (
-        pd.DataFrame(carry_events)
+    miscontrol_events_df = (
+        pd.DataFrame(miscontrol_events)
         .sort_values("event_id")
         .reset_index(drop=True)
     )
 
-    return carry_events_df
+    return miscontrol_events_df

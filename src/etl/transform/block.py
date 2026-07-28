@@ -1,10 +1,20 @@
 import pandas as pd
 
-def transform_carry_events(
+def transform_block_events(
     event_files: list[dict],
 ) -> pd.DataFrame:
     """
-    Transform extracted event data into the CarryEvents table.
+    Transform extracted event data into the BlockEvents table.
+
+    Parameters
+    ----------
+    event_files : list[dict]
+        List of extracted event JSON files.
+
+    Returns
+    -------
+    pd.DataFrame
+        BlockEvents table containing one row per block event.
     """
 
     # -----------------------------
@@ -19,38 +29,34 @@ def transform_carry_events(
     # -----------------------------
     # Transformation
     # -----------------------------
-    carry_events = []
+    block_events = []
 
     for match in event_files:
 
         for event in match["data"]:
 
-            carry = event.get("carry", {})
+            block = event.get("block", {})
 
-            if not carry:
+            if not block:
                 continue
-
-            end_location = carry.get("end_location", [])
 
             row_data = {
                 "event_id": event["id"],
 
-                "end_location_x":
-                    end_location[0] if len(end_location) > 0 else None,
-
-                "end_location_y":
-                    end_location[1] if len(end_location) > 1 else None,
+                "deflection": block.get("deflection"),
+                "offensive": block.get("offensive"),
+                "save_block": block.get("save_block"),
             }
 
-            carry_events.append(row_data)
+            block_events.append(row_data)
 
     # -----------------------------
     # Build DataFrame
     # -----------------------------
-    carry_events_df = (
-        pd.DataFrame(carry_events)
+    block_events_df = (
+        pd.DataFrame(block_events)
         .sort_values("event_id")
         .reset_index(drop=True)
     )
 
-    return carry_events_df
+    return block_events_df
