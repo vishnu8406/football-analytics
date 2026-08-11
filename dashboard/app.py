@@ -295,7 +295,7 @@ Features:
 """)
 
 st.page_link(
-    "pages/10_possesion_explorer.py",
+    "pages/10_possession_explorer.py",
     label="Open Possession Explorer",
     icon="🔄"
 )
