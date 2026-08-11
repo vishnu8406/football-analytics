@@ -78,40 +78,154 @@ football-analytics/
 ├── dashboard/
 │   ├── Home.py
 │   └── pages/
-│       ├── 1_match_analysis.py
-│       ├── 2_player_heatmap.py
-│       ├── 3_xg_analysis.py
-│       ├── 4_pass_network.py
-│       └── 11_possession_explorer.py
+|            ├── 1_team_analysis.py
+|            ├── 2_player_analysis.py
+|            ├── 3_player_comparison.py
+|            ├── 4_team_comparison.py
+|            ├── 5_player_radar.py
+|            ├── 6_match_analysis.py
+|            ├── 7_player_heatmap.py
+|            ├── 8_xG_analysis.py
+|            ├── 10_possesion_explorer.py
+|            └── 9_pass_network.py
+|
+│       
 │
-├── scripts/
-│   ├── database/
-│   ├── preprocessing/
-│   └── analytics/
-│
-├── reports/
-│   └── csv/
-│
-├── data/
-│   ├── database/
-│   └── raw/
-│
-├── requirements.txt
+├── LICENSE
+├── notebooks
 ├── README.md
-└── .gitignore
+├── reports
+│   ├── charts
+│   │   └── messi_radar.png
+|
+├── requirements.txt
+├── sql
+│   ├── match_analysis.sql
+│   ├── player_analysis
+│   │   ├── goalkeeper_analysis.sql
+│   │   ├── player_attacking_analysis.sql
+│   │   ├── player_creative_analysis.sql
+│   │   ├── player_defensive_analysis.sql
+│   │   ├── player_discipline_analysis.sql
+│   │   ├── player_passing_analysis.sql
+│   │   ├── player_shots_analysis.sql
+│   │   └── player_xG.sql
+│   ├── season_overview
+│   │   ├── competition_summary.sql
+│   │   ├── discipline.sql
+│   │   ├── goal_statistics.sql
+│   │   ├── match_competetivenss.sql
+│   │   ├── match_intensity.sql
+│   │   └── set_pieces.sql
+│   └── team_analysis
+│       ├── attacking_stats.sql
+│       ├── defencive_stats.sql
+│       ├── discipline.sql
+│       ├── home_vs_away_perfomance.sql
+│       ├── overall_perfomance.sql
+│       ├── passing_perfomance.sql
+│       ├── possesion_perfomance.sql
+│       └── set_piece.sql
+├── src
+│   ├── analysis
+│   │   ├── database_overview.sql
+│   │   ├── events_suquence.py
+│   │   ├── export_match_analysis.py
+│   │   ├── heatmap_extraction.py
+│   │   ├── __init__.py
+│   │   ├── pass_network_export.py
+│   │   ├── player_comparison.py
+│   │   ├── player_master.py
+│   │   ├── player_position_extraction.py
+│   │   ├── player_radar_dataset.py
+│   │   └── players_comparison_dataset.py
+│   ├── config.py
+│   ├── database
+│   │   ├── __init__.py
+│   │   ├── __pycache__
+│   │   │   ├── __init__.cpython-312.pyc
+│   │   │   └── schema.cpython-312.pyc
+│   │   └── schema.py
+│   ├── download.py
+│   ├── etl
+│   │   ├── extract.py
+│   │   ├── __init__.py
+│   │   ├── load.py
+│   │   ├── __pycache__
+│   │   │   ├── extract.cpython-312.pyc
+│   │   │   ├── __init__.cpython-312.pyc
+│   │   │   ├── load.cpython-312.pyc
+│   │   │   └── transform.cpython-312.pyc
+│   │   └── transform
+│   │       ├── bad_behaviour.py
+│   │       ├── ball_reciept.py
+│   │       ├── ball_recovery.py
+│   │       ├── block.py
+│   │       ├── carry.py
+│   │       ├── clearance.py
+│   │       ├── dribble.py
+│   │       ├── duels.py
+│   │       ├── events.py
+│   │       ├── foul_committed.py
+│   │       ├── goalkeepers.py
+│   │       ├── __init__.py
+│   │       ├── interception.py
+│   │       ├── lineups.py
+│   │       ├── matches.py
+│   │       ├── miscontrol.py
+│   │       ├── passes.py
+│   │       ├── __pycache__
+│   │       │   ├── bad_behaviour.cpython-312.pyc
+│   │       │   ├── ball_reciept.cpython-312.pyc
+│   │       │   ├── ball_recovery.cpython-312.pyc
+│   │       │   ├── block.cpython-312.pyc
+│   │       │   ├── carry.cpython-312.pyc
+│   │       │   ├── clearance.cpython-312.pyc
+│   │       │   ├── dribble.cpython-312.pyc
+│   │       │   ├── duels.cpython-312.pyc
+│   │       │   ├── events.cpython-312.pyc
+│   │       │   ├── foul_committed.cpython-312.pyc
+│   │       │   ├── goalkeepers.cpython-312.pyc
+│   │       │   ├── __init__.cpython-312.pyc
+│   │       │   ├── interception.cpython-312.pyc
+│   │       │   ├── lineups.cpython-312.pyc
+│   │       │   ├── matches.cpython-312.pyc
+│   │       │   ├── miscontrol.cpython-312.pyc
+│   │       │   ├── others.cpython-312.pyc
+│   │       │   ├── passes.cpython-312.pyc
+│   │       │   ├── shots.cpython-312.pyc
+│   │       │   └── substution.cpython-312.pyc
+│   │       ├── shots.py
+│   │       └── substution.py
+│   ├── export_team_csv.py
+│   ├── inspect_database.py
+│   ├── main.py
+│   ├── __pycache__
+│   │   └── config.cpython-312.pyc
+│   ├── utils
+│   │   └── __init__.py
+│   └── visualization
+│       ├── __init__.py
+│       ├── radar_chart.py
+│       └── team_visulaiization.py
 ```
 
 ---
 
 ## 📈 Dashboard Pages
 
-| Page | Description |
-|--------|-------------|
-| Match Analysis | Match statistics, lineups, timeline |
-| Player Heatmap | Player positional activity |
-| xG Analysis | Expected goals comparison |
-| Pass Network | Team passing structures |
-| Possession Explorer | Event sequence visualization |
+| File | Dashboard | Description |
+|--------|--------|-------------|
+| `1_team_analysis.py` | Team Analysis | Team performance overview and season statistics |
+| `2_player_analysis.py` | Player Analysis | Individual player statistics and performance metrics |
+| `3_player_comparison.py` | Player Comparison | Compare two players side-by-side |
+| `4_team_comparison.py` | Team Comparison | Compare two teams across key metrics |
+| `5_player_radar.py` | Player Radar | Radar chart analysis of player attributes |
+| `6_match_analysis.py` | Match Analysis | Match statistics, timeline, and event breakdown |
+| `7_player_heatmap.py` | Player Heatmap | Positional activity and heatmap visualization |
+| `8_xG_analysis.py` | xG Analysis | Expected goals and shot quality analysis |
+| `9_pass_network.py` | Pass Network | Team passing structure and passing relationships |
+| `10_possesion_explorer.py` | Possession Explorer | Interactive possession sequence visualization |
 
 ---
 
@@ -161,36 +275,64 @@ https://github.com/statsbomb/open-data
 
 ---
 
+## ER Diagram
+
+<p align="center">
+  <img src="docs/images/ERD.png" width="100%">
+</p>
+
 ## 📸 Screenshots
+# Dashboard Screenshots
 
-### Home Page
+## Home Page
 
-_Add screenshot here_
+<p align="center">
+  <img src="docs/images/home_page.png" width="100%">
+</p>
 
-### Match Analysis
+## Team Analysis
 
-_Add screenshot here_
+<p align="center">
+  <img src="docs/images/team_analysis.png" width="100%">
+</p>
 
-### Shot Map
+## Shot Map
 
-_Add screenshot here_
+<p align="center">
+  <img src="docs/images/shot_map.png" width="100%">
+</p>
 
-### Pass Network
+## Match Analysis
 
-_Add screenshot here_
+<p align="center">
+  <img src="docs/images/match_analysis.png" width="100%">
+</p>
 
-### Possession Explorer
 
-_Add screenshot here_
+## Player Analysis
 
----
+<p align="center">
+  <img src="docs/images/player_analysis.png" width="100%">
+</p>
+
+## xG Analysis
+
+<p align="center">
+  <img src="docs/images/xG_analysis.png" width="100%">
+</p>
+
+## Possession Explorer
+
+<p align="center">
+  <img src="docs/images/possession_map.png" width="100%">
+</p>
 
 ## ⚙️ Installation
 
 Clone the repository:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/football-analytics.git
+git clone https://github.com/vishnu8406/football-analytics.git
 
 cd football-analytics
 ```
