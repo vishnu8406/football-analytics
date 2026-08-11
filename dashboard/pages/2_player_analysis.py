@@ -32,6 +32,7 @@ heatmap = pd.read_csv("reports/csv/player_heatmap.csv")
 
 players = attacking.copy()
 
+
 players = players.merge(
     passing[
         [
@@ -113,7 +114,7 @@ player = st.selectbox(
 player_data = players[
     players["player_name"] == player
 ].iloc[0]
-
+player_data = player_data.fillna(0)
 # --------------------------------------------------
 # KPI Section
 # --------------------------------------------------
