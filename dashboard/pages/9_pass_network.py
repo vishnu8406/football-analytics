@@ -20,13 +20,21 @@ st.title("🔗 Pass Network Analysis")
 # LOAD DATA
 # ==================================================
 
-passes = pd.read_csv(
-    "reports/csv/pass_network.csv"
-)
+@st.cache_data
+def load_data():
 
-matches = pd.read_csv(
-    "reports/csv/match_analysis/match_summary.csv"
-)
+    passes = pd.read_csv(
+        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/pass_network.csv"
+    )
+
+    matches = pd.read_csv(
+        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/match_analysis/match_summary.csv"
+    )
+
+    return passes, matches
+
+
+passes, matches = load_data()
 
 # ==================================================
 # MATCH SELECTOR

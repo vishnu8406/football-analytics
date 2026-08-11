@@ -14,15 +14,13 @@ st.title("⚔️ Team Comparison")
 # Load Data
 # ----------------------------------
 
-csv_path = (
-    Path(__file__).resolve().parents[2]
-    / "reports"
-    / "csv"
-    / "team_analysis"
-    / "overall_performance.csv"
-)
+@st.cache_data
+def load_team_performance():
+    return pd.read_csv(
+        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/team_analysis/overall_performance.csv"
+    )
 
-df = pd.read_csv(csv_path)
+df = load_team_performance()
 
 # ----------------------------------
 # Team Selection

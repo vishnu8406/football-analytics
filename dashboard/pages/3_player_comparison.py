@@ -5,9 +5,13 @@ import plotly.graph_objects as go
 
 BASE_DIR = Path(__file__).resolve().parents[2]
 
-df = pd.read_csv(
-    BASE_DIR / "reports/csv/player_master.csv"
-)
+@st.cache_data
+def load_player_master():
+    return pd.read_csv(
+        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/player_master.csv"
+    )
+
+df = load_player_master()
 
 st.title("⚔️ Player Comparison")
 

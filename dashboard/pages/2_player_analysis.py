@@ -19,13 +19,58 @@ st.title("👤 Player Analysis Dashboard")
 # Load Data
 # --------------------------------------------------
 
-attacking = pd.read_csv("reports/csv/player_attacking.csv")
-passing = pd.read_csv("reports/csv/player_passes.csv")
-creative = pd.read_csv("reports/csv/player_creative.csv")
-defensive = pd.read_csv("reports/csv/player_defensive.csv")
-discipline = pd.read_csv("reports/csv/player_discipline.csv")
-xg = pd.read_csv("reports/csv/player_xG.csv")
-heatmap = pd.read_csv("reports/csv/player_heatmap.csv")
+
+@st.cache_data
+def load_player_data():
+
+    attacking = pd.read_csv(
+        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/player_attacking.csv"
+    )
+
+    passing = pd.read_csv(
+        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/player_passes.csv"
+    )
+
+    creative = pd.read_csv(
+        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/player_creative.csv"
+    )
+
+    defensive = pd.read_csv(
+        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/player_defensive.csv"
+    )
+
+    discipline = pd.read_csv(
+        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/player_discipline.csv"
+    )
+
+    xg = pd.read_csv(
+        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/player_xG.csv"
+    )
+
+    heatmap = pd.read_csv(
+        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/player_heatmap.csv"
+    )
+
+    return (
+        attacking,
+        passing,
+        creative,
+        defensive,
+        discipline,
+        xg,
+        heatmap
+    )
+
+
+(
+    attacking,
+    passing,
+    creative,
+    defensive,
+    discipline,
+    xg,
+    heatmap
+) = load_player_data()
 # --------------------------------------------------
 # Master Dataset
 # --------------------------------------------------

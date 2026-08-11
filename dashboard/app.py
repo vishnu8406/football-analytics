@@ -15,14 +15,19 @@ st.set_page_config(
 # ==================================================
 # DATABASE CONNECTION
 # ==================================================
-matches = pd.read_csv(
-    "reports/csv/match_analysis/match_summary.csv"
-)
+def load_data():
 
-sequence = pd.read_csv(
-    "reports/csv/event_sequence/sequence_events.csv"
-)
+    matches = pd.read_csv(
+        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/match_analysis/match_summary.csv"
+    )
 
+    sequence = pd.read_csv(
+        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/event_sequence/sequence_events.csv"
+    )
+
+    return matches, sequence
+
+matches, sequence = load_data()
 total_matches = matches["match_id"].nunique()
 
 total_events = len(sequence)

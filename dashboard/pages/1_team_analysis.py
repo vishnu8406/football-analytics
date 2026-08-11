@@ -19,9 +19,13 @@ st.title("🏆 Team Performance Analysis")
 # Load Data
 # -----------------------------------
 
-df = pd.read_csv(
-    "reports/csv/team_analysis/overall_performance.csv"
-)
+@st.cache_data
+def load_team_performance():
+    return pd.read_csv(
+        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/team_analysis/overall_performance.csv"
+    )
+
+df = load_team_performance()
 
 # -----------------------------------
 # Team Selector

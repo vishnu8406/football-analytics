@@ -27,18 +27,17 @@ st.title("⚽ Possession Explorer")
 def load_data():
 
     sequence = pd.read_csv(
-        "reports/csv/event_sequence/sequence_events.csv"
+        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/event_sequence/sequence_events.csv"
     )
 
     matches = pd.read_csv(
-        "reports/csv/match_analysis/match_summary.csv"
+        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/match_analysis/match_summary.csv"
     )
 
     return sequence, matches
 
 
 sequence, matches = load_data()
-
 # =====================================================
 # MATCH SELECTOR
 # =====================================================

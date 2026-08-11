@@ -18,36 +18,63 @@ st.title("⚽ Match Analysis Dashboard")
 # LOAD DATA
 # ==================================================
 
-matches = pd.read_csv(
-    "reports/csv/match_analysis/match_summary.csv"
-)
+@st.cache_data
+def load_match_data():
 
-lineups = pd.read_csv(
-    "reports/csv/match_analysis/match_lineups.csv"
-)
+    matches = pd.read_csv(
+        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/match_analysis/match_summary.csv"
+    )
 
-events = pd.read_csv(
-    "reports/csv/match_analysis/match_events.csv"
-)
+    lineups = pd.read_csv(
+        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/match_analysis/match_lineups.csv"
+    )
 
-shots = pd.read_csv(
-    "reports/csv/match_analysis/match_shots.csv"
-)
+    events = pd.read_csv(
+        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/match_analysis/match_events.csv"
+    )
 
-subs = pd.read_csv(
-    "reports/csv/match_analysis/substitutions.csv"
-)
+    shots = pd.read_csv(
+        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/match_analysis/match_shots.csv"
+    )
 
-cards = pd.read_csv(
-    "reports/csv/match_analysis/cards.csv"
-)
+    subs = pd.read_csv(
+        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/match_analysis/substitutions.csv"
+    )
 
-goalkeepers = pd.read_csv(
-    "reports/csv/match_analysis/goalkeeper_events.csv"
-)
-formation = pd.read_csv(
-    "reports/csv/match_analysis/player_position.csv"
-)
+    cards = pd.read_csv(
+        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/match_analysis/cards.csv"
+    )
+
+    goalkeepers = pd.read_csv(
+        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/match_analysis/goalkeeper_events.csv"
+    )
+
+    formation = pd.read_csv(
+        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/match_analysis/player_position.csv"
+    )
+
+    return (
+        matches,
+        lineups,
+        events,
+        shots,
+        subs,
+        cards,
+        goalkeepers,
+        formation
+    )
+
+
+(
+    matches,
+    lineups,
+    events,
+    shots,
+    subs,
+    cards,
+    goalkeepers,
+    formation
+) = load_match_data()
 # ==================================================
 # MATCH SELECTOR
 # ==================================================

@@ -20,12 +20,21 @@ st.title("🔥 Player Heatmap")
 # LOAD DATA
 # ==================================================
 
-heatmap = pd.read_csv(
-    "reports/csv/player_heatmap.csv"
-)
-match_summary = pd.read_csv(
-    "reports/csv/match_analysis/match_summary.csv"
-)
+@st.cache_data
+def load_data():
+
+    heatmap = pd.read_csv(
+        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/player_heatmap.csv"
+    )
+
+    match_summary = pd.read_csv(
+        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/match_analysis/match_summary.csv"
+    )
+
+    return heatmap, match_summary
+
+
+heatmap, match_summary = load_data()
 # ==================================================
 # PLAYER SELECTOR
 # ==================================================

@@ -18,9 +18,13 @@ st.title("📈 Expected Goals (xG) Analysis")
 # LOAD DATA
 # =====================================
 
-xg = pd.read_csv(
-    "reports/csv/player_xG.csv"
-)
+@st.cache_data
+def load_xg():
+    return pd.read_csv(
+        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/player_xG.csv"
+    )
+
+xg = load_xg()
 
 xg = xg[xg["total_shots"] >= 10]
 # =====================================
