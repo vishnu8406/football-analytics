@@ -228,6 +228,11 @@ football-analytics/
 | `10_possesion_explorer.py` | Possession Explorer | Interactive possession sequence visualization |
 
 ---
+## 🏗 Architecture
+
+<p align="center">
+  <img src="docs/images/architechure1.png" width="100%">
+</p>
 
 ## 📊 Analytics Pipeline
 
@@ -364,7 +369,38 @@ Recommended:
 Streamlit Community Cloud
 
 ---
+## 🌐 Live Demo
 
+🚀 Dashboard:
+https://football-analytics-maiyarasu.streamlit.app/
+
+📂 GitHub Repository:
+https://github.com/vishnu8406/football-analytics
+
+## 🤗 Dataset Availability
+
+The processed SQLite database used by this project is publicly available.
+
+### Contents
+
+- football.db
+- 47 relational tables
+- Match data
+- Event data
+- Player data
+- Team data
+- Shot events
+- Pass events
+- Possession events
+- Goalkeeper events
+
+### Download
+
+Hugging Face Dataset:
+
+https://huggingface.co/datasets/Maiyarasu/football_analytics
+
+The dataset is generated using the ETL pipeline included in this repository.
 ## 🎯 Project Objectives
 
 The goal of this project is to demonstrate:
