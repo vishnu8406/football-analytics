@@ -398,7 +398,7 @@ roadmap = pd.DataFrame(
 
 st.dataframe(
     roadmap,
-    use_container_width=True,
+    width="stretch",
     hide_index=True
 )
 

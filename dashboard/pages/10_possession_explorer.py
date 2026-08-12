@@ -721,7 +721,7 @@ with tab2:
 
     st.dataframe(
         timeline,
-        use_container_width=True,
+        width="stretch",
         hide_index=True
     )
 
@@ -737,6 +737,6 @@ with tab3:
 
     st.dataframe(
         possession_df,
-        use_container_width=True,
+        width="stretch",
         hide_index=True
     )

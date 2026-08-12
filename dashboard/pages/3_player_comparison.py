@@ -55,7 +55,7 @@ st.subheader("Statistical Comparison")
 
 st.dataframe(
     comparison_df,
-    use_container_width=True
+    width="stretch"
 )
 
 fig = go.Figure()
@@ -85,7 +85,7 @@ fig.update_layout(
 
 st.plotly_chart(
     fig,
-    use_container_width=True
+    width="stretch"
 )
 
 radar_metrics = [
@@ -128,5 +128,5 @@ fig.update_layout(
 
 st.plotly_chart(
     fig,
-    use_container_width=True
+    width="stretch"
 )

@@ -237,7 +237,7 @@ fig = px.bar(
     title="Attacking Statistics"
 )
 
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, width="stretch")
 
 # --------------------------------------------------
 # Passing Analysis
@@ -266,7 +266,7 @@ fig = px.bar(
     title="Passing Statistics"
 )
 
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, width="stretch")
 
 # --------------------------------------------------
 # Creativity Analysis
@@ -295,7 +295,7 @@ fig = px.bar(
     title="Creativity Statistics"
 )
 
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, width="stretch")
 
 # --------------------------------------------------
 # Defensive Analysis
@@ -328,7 +328,7 @@ fig = px.bar(
     title="Defensive Statistics"
 )
 
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, width="stretch")
 
 # --------------------------------------------------
 # Discipline Analysis
@@ -357,7 +357,7 @@ fig = px.bar(
     title="Disciplinary Record"
 )
 
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, width="stretch")
 
 # --------------------------------------------------
 # xG Analysis
@@ -396,7 +396,7 @@ with col2:
 
     st.plotly_chart(
         fig,
-        use_container_width=True
+        width="stretch"
     )
 
 # --------------------------------------------------
@@ -420,7 +420,7 @@ st.dataframe(
             "total_xg"
         ]
     ],
-    use_container_width=True
+    width="stretch"
 )
 st.markdown("---")
 st.subheader("🔥 Player Position Heatmap")
@@ -458,7 +458,7 @@ if len(player_heat) > 0:
 
     st.plotly_chart(
         fig,
-        use_container_width=True
+        width="stretch"
     )
 
 else:

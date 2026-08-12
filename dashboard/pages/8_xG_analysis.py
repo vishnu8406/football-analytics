@@ -93,7 +93,7 @@ fig.add_shape(
 
 st.plotly_chart(
     fig,
-    use_container_width=True
+    width="stretch"
 )
 
 # =====================================
@@ -117,7 +117,7 @@ fig = px.bar(
 
 st.plotly_chart(
     fig,
-    use_container_width=True
+    width="stretch"
 )
 
 # =====================================
@@ -141,7 +141,7 @@ fig = px.bar(
 
 st.plotly_chart(
     fig,
-    use_container_width=True
+    width="stretch"
 )
 
 # =====================================
@@ -164,7 +164,7 @@ fig = px.bar(
 
 st.plotly_chart(
     fig,
-    use_container_width=True
+    width="stretch"
 )
 
 # =====================================
@@ -188,7 +188,7 @@ fig = px.bar(
 
 st.plotly_chart(
     fig,
-    use_container_width=True
+    width="stretch"
 )
 
 # =====================================
@@ -236,5 +236,5 @@ c4.metric(
 
 st.dataframe(
     player_data.to_frame().T,
-    use_container_width=True
+    width="stretch"
 )

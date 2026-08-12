@@ -144,7 +144,7 @@ fig.update_layout(
 
 st.plotly_chart(
     fig,
-    use_container_width=True
+    width="stretch"
 )
 
 # --------------------------------------------------
@@ -168,7 +168,7 @@ percentile_df = pd.DataFrame({
 
 st.dataframe(
     percentile_df,
-    use_container_width=True
+    width="stretch"
 )
 
 # --------------------------------------------------
@@ -215,7 +215,7 @@ stats = pd.DataFrame({
 
 st.dataframe(
     stats,
-    use_container_width=True
+    width="stretch"
 )
 
 # --------------------------------------------------
@@ -240,5 +240,5 @@ st.dataframe(
             "finishing_efficiency"
         ]
     ],
-    use_container_width=True
+    width="stretch"
 )

@@ -121,7 +121,7 @@ with col1:
 
     st.plotly_chart(
         fig,
-        use_container_width=True
+        width="stretch"
     )
 
 # -----------------------------------
@@ -148,7 +148,7 @@ with col2:
 
     st.plotly_chart(
         fig,
-        use_container_width=True
+        width="stretch"
     )
 
 # -----------------------------------
@@ -170,7 +170,7 @@ league_table.index += 1
 
 st.dataframe(
     league_table,
-    use_container_width=True
+    width="stretch"
 )
 
 # -----------------------------------
@@ -194,7 +194,7 @@ fig = px.bar(
 
 st.plotly_chart(
     fig,
-    use_container_width=True
+    width="stretch"
 )
 
 # -----------------------------------
@@ -218,7 +218,7 @@ fig = px.bar(
 
 st.plotly_chart(
     fig,
-    use_container_width=True
+    width="stretch"
 )
 
 # -----------------------------------
@@ -264,5 +264,5 @@ fig.update_layout(
 
 st.plotly_chart(
     fig,
-    use_container_width=True
+    width="stretch"
 )

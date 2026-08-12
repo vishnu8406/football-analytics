@@ -89,7 +89,7 @@ comparison = pd.DataFrame({
 })
 
 st.subheader("Comparison Table")
-st.dataframe(comparison, use_container_width=True)
+st.dataframe(comparison, width="stretch")
 
 # ----------------------------------
 # Grouped Bar Chart
@@ -137,7 +137,7 @@ fig = px.bar(
     title="Team Performance Comparison"
 )
 
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, width="stretch")
 
 import plotly.graph_objects as go
 

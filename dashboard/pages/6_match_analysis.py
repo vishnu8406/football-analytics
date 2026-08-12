@@ -298,7 +298,7 @@ with col1:
             match_id,
             home_team
         ),
-        use_container_width=True
+        width="stretch"
     )
 
 with col2:
@@ -308,7 +308,7 @@ with col2:
             match_id,
             away_team
         ),
-        use_container_width=True
+        width="stretch"
     )
 # ==================================================
 # SHOT MAP
@@ -534,7 +534,7 @@ fig = px.bar(
 
 st.plotly_chart(
     fig,
-    use_container_width=True
+    width="stretch"
 )
 
 # ==================================================
@@ -560,7 +560,7 @@ fig = px.bar(
 
 st.plotly_chart(
     fig,
-    use_container_width=True
+    width="stretch"
 )
 
 # ==================================================
@@ -576,7 +576,7 @@ if not match_subs.empty:
         match_subs.sort_values(
             "minute"
         ),
-        use_container_width=True
+        width="stretch"
     )
 
 # ==================================================
@@ -592,7 +592,7 @@ if not match_cards.empty:
         match_cards.sort_values(
             "minute"
         ),
-        use_container_width=True
+        width="stretch"
     )
 
 # ==================================================
@@ -608,7 +608,7 @@ if not match_gk.empty:
         match_gk.sort_values(
             "minute"
         ),
-        use_container_width=True
+        width="stretch"
     )
 #new
 # ==================================================
@@ -787,5 +787,5 @@ st.dataframe(
     match_events.sort_values(
         ["minute", "second"]
     ),
-    use_container_width=True
+    width="stretch"
 )

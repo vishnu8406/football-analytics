@@ -280,7 +280,7 @@ top_connections = connections.sort_values(
 
 st.dataframe(
     top_connections,
-    use_container_width=True
+    width="stretch"
 )
 
 # ==================================================

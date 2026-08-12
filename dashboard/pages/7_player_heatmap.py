@@ -219,5 +219,5 @@ with st.expander("View Event Data"):
 
     st.dataframe(
         player_df,
-        use_container_width=True
+        width="stretch"
     )
