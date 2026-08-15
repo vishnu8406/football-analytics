@@ -18,6 +18,9 @@ data/database/
 
 reports/csv
 
+reports/parquet
+
+
 # Database
 database/*.db
 *.sqlite
