@@ -16,9 +16,9 @@ data/raw/
 data/processed/
 data/database/
 
-reports/csv
+reports/csv/
 
-reports/parquet
+reports/parquet/
 
 
 # Database
