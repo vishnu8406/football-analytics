@@ -442,6 +442,13 @@ Data Analytics Enthusiast
 Python Developer  
 Football Analytics Explorer
 
+**Sriram J**
+
+Electrical & Electronics Engineering  
+AI Enthusiast  
+Python Developer  
+Computer Vision and robotics research
+
 ---
 
 ## ⭐ Acknowledgements
