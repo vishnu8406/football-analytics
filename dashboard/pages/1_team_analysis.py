@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-
+from utils.data_loader import load_parquet
 # -----------------------------------
 # Page Config
 # -----------------------------------
@@ -19,14 +19,11 @@ st.title("🏆 Team Performance Analysis")
 # Load Data
 # -----------------------------------
 
-@st.cache_data
-def load_team_performance():
-    return pd.read_csv(
-        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/team_analysis/overall_performance.csv"
-    )
 
-df = load_team_performance()
 
+df = load_parquet(
+    "team_analysis/overall_performance.parquet"
+)
 # -----------------------------------
 # Team Selector
 # -----------------------------------

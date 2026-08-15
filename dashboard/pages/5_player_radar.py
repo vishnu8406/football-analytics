@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
-
+from utils.data_loader import load_parquet
 # --------------------------------------------------
 # Page Config
 # --------------------------------------------------
@@ -18,13 +18,8 @@ st.title("📡 Player Radar Dashboard")
 # Load Data
 # --------------------------------------------------
 
-@st.cache_data
-def load_player_radar():
-    return pd.read_csv(
-        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/player_radar_dataset.csv"
-    )
+radar  = load_parquet("player_radar_dataset.parquet")
 
-radar = load_player_radar()
 
 # --------------------------------------------------
 # Player Selection

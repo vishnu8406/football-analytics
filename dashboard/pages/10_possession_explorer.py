@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from mplsoccer import Pitch
 from matplotlib.lines import Line2D
 from matplotlib.patches import FancyArrowPatch
+from utils.data_loader import load_parquet
 
 # =====================================================
 # PAGE CONFIG
@@ -23,21 +24,15 @@ st.title("⚽ Possession Explorer")
 # LOAD DATA
 # =====================================================
 
-@st.cache_data
-def load_data():
-
-    sequence = pd.read_csv(
-        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/event_sequence/sequence_events.csv"
-    )
-
-    matches = pd.read_csv(
-        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/match_analysis/match_summary.csv"
-    )
-
-    return sequence, matches
 
 
-sequence, matches = load_data()
+sequence = load_parquet(
+    "event_sequence/sequence_events.parquet"
+)
+
+matches = load_parquet(
+    "match_analysis/match_summary.parquet"
+)
 # =====================================================
 # MATCH SELECTOR
 # =====================================================

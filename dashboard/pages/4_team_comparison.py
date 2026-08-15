@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 from pathlib import Path
+from utils.data_loader import load_parquet
 
 st.set_page_config(
     page_title="Team Comparison",
@@ -14,13 +15,9 @@ st.title("⚔️ Team Comparison")
 # Load Data
 # ----------------------------------
 
-@st.cache_data
-def load_team_performance():
-    return pd.read_csv(
-        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/team_analysis/overall_performance.csv"
-    )
-
-df = load_team_performance()
+df = load_parquet(
+    "team_analysis/overall_performance.parquet"
+)
 
 # ----------------------------------
 # Team Selection

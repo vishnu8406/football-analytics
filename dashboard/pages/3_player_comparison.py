@@ -2,16 +2,11 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 import plotly.graph_objects as go
+from utils.data_loader import load_parquet
 
 BASE_DIR = Path(__file__).resolve().parents[2]
 
-@st.cache_data
-def load_player_master():
-    return pd.read_csv(
-        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/player_master.csv"
-    )
-
-df = load_player_master()
+df = load_parquet("player_master.parquet")
 
 st.title("⚔️ Player Comparison")
 

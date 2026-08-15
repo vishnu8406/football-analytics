@@ -3,7 +3,7 @@ import pandas as pd
 
 from mplsoccer import Pitch
 import matplotlib.pyplot as plt
-
+from utils.data_loader import load_parquet
 # ==================================================
 # PAGE CONFIG
 # ==================================================
@@ -20,15 +20,17 @@ st.title("🔥 Player Heatmap")
 # LOAD DATA
 # ==================================================
 
-@st.cache_data
+from utils.data_loader import load_parquet
+
+@st.cache_data(show_spinner=False)
 def load_data():
 
-    heatmap = pd.read_csv(
-        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/player_heatmap.csv"
+    heatmap = load_parquet(
+        "player_heatmap.parquet"
     )
 
-    match_summary = pd.read_csv(
-        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/match_analysis/match_summary.csv"
+    match_summary = load_parquet(
+        "match_analysis/match_summary.parquet"
     )
 
     return heatmap, match_summary

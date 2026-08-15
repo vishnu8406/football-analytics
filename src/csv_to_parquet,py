@@ -1,0 +1,46 @@
+from pathlib import Path
+import pandas as pd
+
+# Input and output folders
+CSV_ROOT = Path("reports/csv")
+PARQUET_ROOT = Path("reports/parquet")
+
+# Create output root
+PARQUET_ROOT.mkdir(exist_ok=True)
+
+csv_files = list(CSV_ROOT.rglob("*.csv"))
+
+print(f"Found {len(csv_files)} CSV files")
+
+for csv_file in csv_files:
+    try:
+        # Preserve folder structure
+        relative_path = csv_file.relative_to(CSV_ROOT)
+        parquet_file = PARQUET_ROOT / relative_path.with_suffix(".parquet")
+
+        parquet_file.parent.mkdir(parents=True, exist_ok=True)
+
+        print(f"Converting: {csv_file}")
+
+        df = pd.read_csv(csv_file)
+
+        df.to_parquet(
+            parquet_file,
+            index=False,
+            compression="snappy"
+        )
+
+        original_size = csv_file.stat().st_size / (1024 * 1024)
+        parquet_size = parquet_file.stat().st_size / (1024 * 1024)
+
+        print(
+            f"✓ {csv_file.name} | "
+            f"CSV: {original_size:.2f} MB -> "
+            f"Parquet: {parquet_size:.2f} MB"
+        )
+
+    except Exception as e:
+        print(f"✗ Failed: {csv_file}")
+        print(e)
+
+print("\nDone!")

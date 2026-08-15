@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 from mplsoccer import Pitch
-
+from utils.data_loader import load_parquet
 # ==================================================
 # PAGE CONFIG
 # ==================================================
@@ -20,21 +20,13 @@ st.title("🔗 Pass Network Analysis")
 # LOAD DATA
 # ==================================================
 
-@st.cache_data
-def load_data():
-
-    passes = pd.read_csv(
-        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/pass_network.csv"
-    )
-
-    matches = pd.read_csv(
-        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/match_analysis/match_summary.csv"
-    )
-
-    return passes, matches
 
 
-passes, matches = load_data()
+passes = load_parquet("pass_network.parquet")
+
+matches = load_parquet(
+    "match_analysis/match_summary.parquet"
+)
 
 # ==================================================
 # MATCH SELECTOR

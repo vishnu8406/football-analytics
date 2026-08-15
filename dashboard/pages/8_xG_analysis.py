@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-
+from utils.data_loader import load_parquet
 # =====================================
 # PAGE CONFIG
 # =====================================
@@ -18,13 +18,7 @@ st.title("📈 Expected Goals (xG) Analysis")
 # LOAD DATA
 # =====================================
 
-@st.cache_data
-def load_xg():
-    return pd.read_csv(
-        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/player_xG.csv"
-    )
-
-xg = load_xg()
+xg = load_parquet("player_xG.parquet")
 
 xg = xg[xg["total_shots"] >= 10]
 # =====================================

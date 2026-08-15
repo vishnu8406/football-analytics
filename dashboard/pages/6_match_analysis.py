@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 from mplsoccer import Pitch
+from utils.data_loader import load_parquet
 # ==================================================
 # PAGE CONFIG
 # ==================================================
@@ -18,39 +19,39 @@ st.title("⚽ Match Analysis Dashboard")
 # LOAD DATA
 # ==================================================
 
-@st.cache_data
+@st.cache_data(show_spinner=False)
 def load_match_data():
 
-    matches = pd.read_csv(
-        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/match_analysis/match_summary.csv"
+    matches = load_parquet(
+        "match_analysis/match_summary.parquet"
     )
 
-    lineups = pd.read_csv(
-        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/match_analysis/match_lineups.csv"
+    lineups = load_parquet(
+        "match_analysis/match_lineups.parquet"
     )
 
-    events = pd.read_csv(
-        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/match_analysis/match_events.csv"
+    events = load_parquet(
+        "match_analysis/match_events.parquet"
     )
 
-    shots = pd.read_csv(
-        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/match_analysis/match_shots.csv"
+    shots = load_parquet(
+        "match_analysis/match_shots.parquet"
     )
 
-    subs = pd.read_csv(
-        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/match_analysis/substitutions.csv"
+    subs = load_parquet(
+        "match_analysis/substitutions.parquet"
     )
 
-    cards = pd.read_csv(
-        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/match_analysis/cards.csv"
+    cards = load_parquet(
+        "match_analysis/cards.parquet"
     )
 
-    goalkeepers = pd.read_csv(
-        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/match_analysis/goalkeeper_events.csv"
+    goalkeepers = load_parquet(
+        "match_analysis/goalkeeper_events.parquet"
     )
 
-    formation = pd.read_csv(
-        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/match_analysis/player_position.csv"
+    formation = load_parquet(
+        "match_analysis/player_position.parquet"
     )
 
     return (

@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import sqlite3
-
+from utils.data_loader import load_parquet
 # ==================================================
 # PAGE CONFIG
 # ==================================================
@@ -15,19 +15,13 @@ st.set_page_config(
 # ==================================================
 # DATABASE CONNECTION
 # ==================================================
-def load_data():
+sequence = load_parquet(
+    "event_sequence/sequence_events.parquet"
+)
 
-    matches = pd.read_csv(
-        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/match_analysis/match_summary.csv"
-    )
-
-    sequence = pd.read_csv(
-        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/event_sequence/sequence_events.csv"
-    )
-
-    return matches, sequence
-
-matches, sequence = load_data()
+matches = load_parquet(
+    "match_analysis/match_summary.parquet"
+)
 total_matches = matches["match_id"].nunique()
 
 total_events = len(sequence)

@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-
+from utils.data_loader import load_parquet
 # --------------------------------------------------
 # Page Config
 # --------------------------------------------------
@@ -20,36 +20,22 @@ st.title("👤 Player Analysis Dashboard")
 # --------------------------------------------------
 
 
-@st.cache_data
+@st.cache_data(ttl=3600)
 def load_player_data():
 
-    attacking = pd.read_csv(
-        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/player_attacking.csv"
-    )
+    attacking = load_parquet("player_attacking.parquet")
 
-    passing = pd.read_csv(
-        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/player_passes.csv"
-    )
+    passing = load_parquet("player_passes.parquet")
 
-    creative = pd.read_csv(
-        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/player_creative.csv"
-    )
+    creative = load_parquet("player_creative.parquet")
 
-    defensive = pd.read_csv(
-        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/player_defensive.csv"
-    )
+    defensive = load_parquet("player_defensive.parquet")
 
-    discipline = pd.read_csv(
-        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/player_discipline.csv"
-    )
+    discipline = load_parquet("player_discipline.parquet")
 
-    xg = pd.read_csv(
-        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/player_xG.csv"
-    )
+    xg = load_parquet("player_xG.parquet")
 
-    heatmap = pd.read_csv(
-        "https://huggingface.co/datasets/Maiyarasu/football_analytics/resolve/main/csv/player_heatmap.csv"
-    )
+    heatmap = load_parquet("player_heatmap.parquet")
 
     return (
         attacking,
