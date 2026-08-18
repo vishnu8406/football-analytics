@@ -28,7 +28,7 @@ st.title("🧠 Player Similarity Model")
 def load_data():
 
     return load_parquet(
-        "parquet/player_comparison_dataset.parquet"
+        "player_comparison_dataset.parquet"
     )
 
 df = load_data()

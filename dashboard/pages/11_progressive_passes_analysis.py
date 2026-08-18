@@ -20,15 +20,15 @@ st.title("🚀 Progressive Pass Analysis")
 def load_data():
 
     player_df = load_parquet(
-        "parquet/progressive_passes/player_progressive_passes.parquet"
+        "progressive_passes/player_progressive_passes.parquet"
     )
 
     team_df = load_parquet(
-        "parquet/progressive_passes/team_progressive_passes.parquet"
+        "progressive_passes/team_progressive_passes.parquet"
     )
 
     event_df = load_parquet(
-        "parquet/progressive_passes/progressive_passes.parquet"
+        "progressive_passes/progressive_passes.parquet"
     )
 
     return player_df, team_df, event_df

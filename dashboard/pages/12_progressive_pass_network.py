@@ -26,7 +26,7 @@ st.title("🕸️ Progressive Pass Network")
 def load_data():
 
     return load_parquet(
-        "parquet/progressive_passes/progressive_pass_network.parquet"
+        "progressive_passes/progressive_pass_network.parquet"
     )
 
 df = load_data()
